@@ -1,6 +1,11 @@
 {
   "default": "psalm-16",
   "passages": [
-    { "id": "psalm-16", "file": "psalm-16.json", "title": "詩篇 第十六篇" }
+    { "id": "psalm-16", "file": "psalm-16.json", "title": "詩篇 第十六篇" },
+    { "id": "psalm-1", "file": "psalm-1.json", "title": "詩篇 第一篇" },
+    { "id": "psalm-8", "file": "psalm-8.json", "title": "詩篇 第八篇" },
+    { "id": "psalm-20", "file": "psalm-20.json", "title": "詩篇 第二十篇" },
+    { "id": "psalm-100", "file": "psalm-100.json", "title": "詩篇 第一百篇" },
+    { "id": "psalm-23", "file": "psalm-23.json", "title": "詩篇 第二十三篇" }
   ]
 }
