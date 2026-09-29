@@ -1,0 +1,6 @@
+{
+  "default": "psalm-16",
+  "passages": [
+    { "id": "psalm-16", "file": "psalm-16.json", "title": "詩篇 第十六篇" }
+  ]
+}

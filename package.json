@@ -1,0 +1,23 @@
+{
+  "name": "verse-driving",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "3D city driving game for memorizing Bible verses: drive through the gate with the missing word.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "playtest": "node scripts/playtest.mjs"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.186.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}

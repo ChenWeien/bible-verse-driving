@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>讀經複習 Verse Driving</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="scene"></div>
+
+      <div id="hud" class="hidden">
+        <div class="hud-top">
+          <div class="hud-box hud-title">
+            <div id="hud-passage-title"></div>
+            <div id="hud-passage-ref" class="muted"></div>
+          </div>
+          <div class="hud-box hud-stats">
+            <div><span class="muted">時間 Time</span> <b id="hud-timer">0:00</b></div>
+            <div><span class="muted">錯誤 Mistakes</span> <b id="hud-mistakes">0</b></div>
+            <div><span class="muted">速度 Speed</span> <b id="hud-speed">0</b> <span class="muted">km/h</span></div>
+          </div>
+        </div>
+        <div class="hud-progress">
+          <div class="hud-progress-bar"><div id="hud-progress-fill"></div></div>
+          <div id="hud-progress-text" class="muted"></div>
+        </div>
+        <div id="hud-toast" class="hud-toast"></div>
+        <div class="hud-verse hud-box">
+          <div id="hud-verse-ref" class="verse-ref"></div>
+          <div id="hud-verse-text" class="verse-text"></div>
+          <div class="hud-keys muted">W/↑ 加速 · S/↓ 煞車 · A/D ←/→ 換車道 · P 暫停</div>
+        </div>
+      </div>
+
+      <div id="start-screen" class="overlay">
+        <div class="panel">
+          <h1>讀經複習 <span class="en">Verse Driving</span></h1>
+          <p class="lead">在城市中開車，穿過寫著正確字詞的門，完成整段經文！<br /><span class="muted">Drive through the gate with the missing word to complete the passage.</span></p>
+          <label class="field">
+            <span>選擇經文 Passage</span>
+            <select id="passage-select"></select>
+          </label>
+          <ul class="controls">
+            <li><kbd>W</kbd>/<kbd>↑</kbd> 加速 Accelerate</li>
+            <li><kbd>S</kbd>/<kbd>↓</kbd> 煞車・倒車 Brake / Reverse</li>
+            <li><kbd>A</kbd><kbd>D</kbd>/<kbd>←</kbd><kbd>→</kbd> 左右換車道 Steer</li>
+            <li><kbd>P</kbd>/<kbd>Esc</kbd> 暫停 Pause</li>
+          </ul>
+          <p class="muted small">選錯門會被柵欄彈回，正確的門會發光提示，再試一次即可。<br />Wrong gate? You bounce back, the right gate glows — try again.</p>
+          <div id="start-error" class="error hidden"></div>
+          <button id="start-button" class="primary">開始 Start <span class="muted">(Enter)</span></button>
+        </div>
+      </div>
+
+      <div id="finish-screen" class="overlay hidden">
+        <div class="panel wide">
+          <h1>完成！<span class="en">Finished!</span></h1>
+          <div id="finish-title" class="finish-title"></div>
+          <div class="finish-stats">
+            <div><span class="muted">時間 Time</span><b id="finish-time"></b></div>
+            <div><span class="muted">錯誤 Mistakes</span><b id="finish-mistakes"></b></div>
+            <div><span class="muted">正確率 Accuracy</span><b id="finish-accuracy"></b></div>
+          </div>
+          <div id="finish-passage" class="finish-passage"></div>
+          <div class="buttons">
+            <button id="retry-button" class="primary">再玩一次 Play again <span class="muted">(Enter)</span></button>
+            <button id="menu-button">選擇經文 Menu</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="pause-screen" class="overlay hidden">
+        <div class="panel">
+          <h1>暫停 <span class="en">Paused</span></h1>
+          <p class="muted">按 P 或 Esc 繼續 · Press P / Esc to resume</p>
+          <div class="buttons">
+            <button id="resume-button" class="primary">繼續 Resume</button>
+            <button id="quit-button">回主選單 Menu</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="loading" class="overlay"><div class="panel">載入中 Loading…</div></div>
+      <div id="debug" class="debug hidden"></div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
