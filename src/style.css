@@ -711,37 +711,167 @@ body.touch-ui button.primary {
   }
 }
 
-@media (orientation: landscape) and (max-height: 520px) {
-  .touch-pad {
-    top: 50%;
+/* Phone held sideways. iPhone SE landscape is 667×375, so the portrait
+   cards and mid-screen buttons would cover the road. */
+@media (orientation: landscape) and (max-height: 500px) {
+  #hud {
+    display: flex;
+    flex-direction: column;
+    padding:
+      calc(4px + env(safe-area-inset-top) + var(--vv-top, 0px))
+      calc(8px + env(safe-area-inset-right))
+      calc(4px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px))
+      calc(8px + env(safe-area-inset-left));
+  }
+
+  .hud-top,
+  .hud-progress,
+  .hud-verse {
+    position: relative;
+    top: auto;
+    right: auto;
     bottom: auto;
-    transform: translateY(-42%);
+    left: auto;
+    transform: none;
+    width: auto;
   }
 
-  .touch-pad .touch-btn {
-    width: 64px;
-    height: 64px;
+  .hud-top {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
   }
 
-  .touch-pad .touch-gas {
-    width: 76px;
-    height: 76px;
+  .hud-box {
+    padding: 4px 8px;
   }
 
-  body.touch-ui .hud-verse {
-    bottom: calc(8px + env(safe-area-inset-bottom));
-    width: min(42vw, 460px);
+  .hud-title {
+    min-width: 0;
+  }
+
+  .hud-title div:first-child {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #hud-passage-ref {
+    display: none;
+  }
+
+  .hud-stats {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    gap: 10px;
+    text-align: right;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .hud-stats .lbl-en {
+    display: none;
+  }
+
+  .hud-stats b {
+    font-size: 0.85rem;
+    min-width: 0;
+  }
+
+  .hud-progress {
+    margin-top: 4px;
+    font-size: 0.7rem;
+  }
+
+  .hud-progress-bar {
+    height: 6px;
+    margin-bottom: 1px;
+  }
+
+  .hud-verse {
+    align-self: center;
+    width: min(48vw, 380px);
+    margin-top: auto;
+    padding: 3px 8px;
+  }
+
+  .verse-ref {
+    font-size: 0.72rem;
+  }
+
+  .verse-text {
+    font-size: 0.85rem;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .hud-keys,
+  .touch-keys {
+    display: none;
+  }
+
+  .hud-toast {
+    top: 30%;
+    font-size: 0.95rem;
     padding: 6px 10px;
   }
 
-  body.touch-ui .hud-progress {
-    top: calc(88px + env(safe-area-inset-top));
-    width: min(34vw, 280px);
+  body.touch-ui .hud-top {
+    padding-left: 52px;
   }
 
-  body.touch-ui .verse-text {
-    font-size: 0.92rem;
-    line-height: 1.35;
+  body.touch-ui .hud-verse {
+    bottom: auto;
+    width: min(48vw, 380px);
+  }
+
+  body.touch-ui .hud-toast {
+    top: 30%;
+  }
+
+  body.touch-ui .touch-keys {
+    display: none;
+  }
+
+  body.touch-ui #hud {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
+  }
+
+  .touch-pad {
+    top: auto;
+    bottom: calc(4px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
+    transform: none;
+    gap: 6px;
+  }
+
+  .touch-pad .touch-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .touch-pad .touch-gas {
+    width: 52px;
+    height: 52px;
+  }
+
+  .touch-icon {
+    font-size: 1rem;
+  }
+
+  .touch-label {
+    font-size: 0.6rem;
+  }
+
+  .touch-pause {
+    top: calc(4px + env(safe-area-inset-top) + var(--vv-top, 0px));
+    left: calc(6px + env(safe-area-inset-left));
+    height: 28px;
+    padding: 0 8px;
+    font-size: 0.75rem;
+    border-radius: 8px;
   }
 }
 
