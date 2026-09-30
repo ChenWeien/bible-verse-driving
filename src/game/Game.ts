@@ -85,6 +85,7 @@ export class Game {
     if (options.fast) this.car.maxSpeed = 60;
 
     window.addEventListener('resize', () => this.resize());
+    window.visualViewport?.addEventListener('resize', () => this.resize());
     this.resize();
     this.debugEl.classList.toggle('hidden', !options.debug);
     if (options.debug) (window as unknown as { __game: Game }).__game = this;
@@ -138,7 +139,12 @@ export class Game {
     this.hud.showScreen('playing');
     this.hud.update(passage, 0, 0, 0, 0);
     this.spawnNext();
-    this.hud.toast('出發！按 <b>W</b>／<b>↑</b> 加速 · Go!', 'info', 2200);
+    const touch = document.body.classList.contains('touch-ui');
+    this.hud.toast(
+      touch ? '出發！按住 <b>▲</b> 加速 · Hold ▲ to go!' : '出發！按 <b>W</b>／<b>↑</b> 加速 · Go!',
+      'info',
+      2200,
+    );
   }
 
   restart() {

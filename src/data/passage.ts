@@ -16,6 +16,11 @@ export interface PassageIndex {
 export interface RawVerse {
   ref: string;
   text: string;
+  /**
+   * Optional 注音, one syllable per Chinese character in the filled verse (`text` with the
+   * correct word of each blank). Spaces separate syllables. Punctuation is not annotated.
+   */
+  zhuyin?: string;
 }
 
 export interface RawPassage {
@@ -55,6 +60,37 @@ export interface Passage {
 export class PassageError extends Error {}
 
 const BLANK_RE = /\[([^\[\]]*)\]/g;
+const HAN_RE = /\p{Script=Han}/gu;
+const ZHUYIN_SYLLABLE_RE = /^[˙ˊˇˋ]?[\u3105-\u3129]+[˙ˊˇˋ]?$/u;
+
+/** Chinese characters in order, skipping punctuation and other marks. */
+export function hanCharacters(text: string): string[] {
+  return text.match(HAN_RE) ?? [];
+}
+
+/** Splits a `zhuyin` string into syllables. */
+export function zhuyinSyllables(zhuyin: string): string[] {
+  return zhuyin.trim().split(/\s+/).filter(Boolean);
+}
+
+/**
+ * Checks that `zhuyin` lines up with the Chinese characters of the filled verse.
+ * Returns nothing when `zhuyin` is missing or blank.
+ */
+export function assertZhuyin(plainText: string, zhuyin: string | undefined, where: string): void {
+  if (zhuyin === undefined || zhuyin.trim() === '') return;
+  const chars = hanCharacters(plainText);
+  const syllables = zhuyinSyllables(zhuyin);
+  const bad = syllables.filter((s) => !ZHUYIN_SYLLABLE_RE.test(s));
+  if (bad.length > 0) {
+    throw new PassageError(`${where}: zhuyin has a syllable that is not 注音: ${bad.join(' ')}`);
+  }
+  if (syllables.length !== chars.length) {
+    throw new PassageError(
+      `${where}: zhuyin has ${syllables.length} syllables for ${chars.length} characters (${chars.join('')})`,
+    );
+  }
+}
 
 /** Removes blank markup, keeping the correct word: `求你[保佑|離棄]我` -> `求你保佑我`. */
 export function stripMarkup(text: string): string {
@@ -118,7 +154,12 @@ export function parsePassage(raw: RawPassage, rng: () => number = Math.random): 
       challenges.push(challenge);
       return { kind: 'blank', challengeIndex: challenge.index };
     });
-    verses.push({ ref, plainText: stripMarkup(rv.text), parts });
+    const plainText = stripMarkup(rv.text);
+    if (rv.zhuyin !== undefined && typeof rv.zhuyin !== 'string') {
+      throw new PassageError(`verse ${ref}: "zhuyin" must be a string`);
+    }
+    assertZhuyin(plainText, rv.zhuyin, `verse ${ref}`);
+    verses.push({ ref, plainText, parts });
   });
   if (challenges.length === 0) {
     throw new PassageError(`passage "${raw.id}" has no blanks; mark words like [correct|wrong1|wrong2]`);

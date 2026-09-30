@@ -3,14 +3,32 @@ import { loadPassage, loadPassageIndex, type Passage, type PassageIndex } from '
 import { Game } from './game/Game';
 import { Input } from './game/input';
 import { Hud } from './ui/Hud';
+import { installTouchGuards, prefersTouchControls, TouchControls } from './ui/TouchControls';
 
 const params = new URLSearchParams(location.search);
 const flag = (name: string) => params.has(name) && params.get(name) !== '0' && params.get(name) !== 'false';
 const autoParam = params.get('auto');
 const seedParam = params.get('seed');
 
+installTouchGuards();
+if (flag('touch') || prefersTouchControls()) document.body.classList.add('touch-ui');
+
+/** Keep the HUD above Safari's collapsing toolbar on a short phone. */
+function syncVisualViewport() {
+  const vv = window.visualViewport;
+  const top = vv ? vv.offsetTop : 0;
+  const bottom = vv ? Math.max(0, window.innerHeight - vv.offsetTop - vv.height) : 0;
+  const root = document.documentElement;
+  root.style.setProperty('--vv-top', `${top}px`);
+  root.style.setProperty('--vv-bottom', `${bottom}px`);
+}
+syncVisualViewport();
+window.visualViewport?.addEventListener('resize', syncVisualViewport);
+window.visualViewport?.addEventListener('scroll', syncVisualViewport);
+
 const hud = new Hud();
 const input = new Input();
+const touch = new TouchControls(input);
 const game = new Game(document.getElementById('scene')!, hud, input, {
   debug: flag('debug'),
   auto: autoParam === 'wrong' ? 'wrong' : flag('auto') ? 'correct' : false,
@@ -45,6 +63,19 @@ hud.onStart = (id) => void startPassage(id);
 hud.onRetry = () => game.restart();
 hud.onMenu = () => game.toMenu();
 hud.onResume = () => game.togglePause();
+hud.onScreen = (screen) => touch.setPlaying(screen === 'playing');
+touch.onPause = () => game.togglePause();
+
+// A touchscreen that didn't match the media queries still gets the pad on first contact.
+window.addEventListener(
+  'touchstart',
+  () => {
+    if (document.body.classList.contains('touch-ui')) return;
+    document.body.classList.add('touch-ui');
+    touch.setPlaying(hud.visibleScreen === 'playing');
+  },
+  { once: true, passive: true },
+);
 
 input.onPressed((code) => {
   const screen = hud.visibleScreen;

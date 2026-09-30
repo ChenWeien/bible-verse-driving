@@ -2,7 +2,9 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>讀經複習 Verse Driving</title>
   </head>
   <body>
@@ -16,9 +18,9 @@
             <div id="hud-passage-ref" class="muted"></div>
           </div>
           <div class="hud-box hud-stats">
-            <div><span class="muted">時間 Time</span> <b id="hud-timer">0:00</b></div>
-            <div><span class="muted">錯誤 Mistakes</span> <b id="hud-mistakes">0</b></div>
-            <div><span class="muted">速度 Speed</span> <b id="hud-speed">0</b> <span class="muted">km/h</span></div>
+            <div><span class="muted">時間<span class="lbl-en"> Time</span></span> <b id="hud-timer">0:00</b></div>
+            <div><span class="muted">錯誤<span class="lbl-en"> Mistakes</span></span> <b id="hud-mistakes">0</b></div>
+            <div><span class="muted">速度<span class="lbl-en"> Speed</span></span> <b id="hud-speed">0</b> <span class="muted">km/h</span></div>
           </div>
         </div>
         <div class="hud-progress">
@@ -30,6 +32,7 @@
           <div id="hud-verse-ref" class="verse-ref"></div>
           <div id="hud-verse-text" class="verse-text"></div>
           <div class="hud-keys muted">W/↑ 加速 · S/↓ 煞車 · A/D ←/→ 換車道 · P 暫停</div>
+          <div class="touch-keys muted">按住 ◀ ▶ 轉向 · ▲ 加速 · ▼ 煞車</div>
         </div>
       </div>
 
@@ -41,7 +44,8 @@
             <span>選擇經文 Passage</span>
             <select id="passage-select"></select>
           </label>
-          <ul class="controls">
+          <p class="touch-hint muted small">按住畫面按鈕開車：◀ ▶ 轉向，▲ 加速，▼ 煞車。點「暫停」暫停。<br />Hold the on-screen buttons to steer, accelerate, and brake. A keyboard works too.</p>
+          <ul class="controls keyboard-controls">
             <li><kbd>W</kbd>/<kbd>↑</kbd> 加速 Accelerate</li>
             <li><kbd>S</kbd>/<kbd>↓</kbd> 煞車・倒車 Brake / Reverse</li>
             <li><kbd>A</kbd><kbd>D</kbd>/<kbd>←</kbd><kbd>→</kbd> 左右換車道 Steer</li>
@@ -73,11 +77,35 @@
       <div id="pause-screen" class="overlay hidden">
         <div class="panel">
           <h1>暫停 <span class="en">Paused</span></h1>
-          <p class="muted">按 P 或 Esc 繼續 · Press P / Esc to resume</p>
+          <p class="muted">按繼續，或按 P / Esc · Tap Resume, or press P / Esc</p>
           <div class="buttons">
             <button id="resume-button" class="primary">繼續 Resume</button>
             <button id="quit-button">回主選單 Menu</button>
           </div>
+        </div>
+      </div>
+
+      <div id="touch-controls" class="touch-controls hidden">
+        <button type="button" id="touch-pause" class="touch-btn touch-pause" aria-label="暫停 Pause">暫停</button>
+        <div class="touch-pad left">
+          <button type="button" class="touch-btn" data-code="KeyA" aria-label="左轉 Left" aria-pressed="false">
+            <span class="touch-icon" aria-hidden="true">◀</span>
+            <span class="touch-label">左</span>
+          </button>
+          <button type="button" class="touch-btn" data-code="KeyD" aria-label="右轉 Right" aria-pressed="false">
+            <span class="touch-icon" aria-hidden="true">▶</span>
+            <span class="touch-label">右</span>
+          </button>
+        </div>
+        <div class="touch-pad right">
+          <button type="button" class="touch-btn" data-code="KeyS" aria-label="煞車 Brake" aria-pressed="false">
+            <span class="touch-icon" aria-hidden="true">▼</span>
+            <span class="touch-label">煞車</span>
+          </button>
+          <button type="button" class="touch-btn touch-gas" data-code="KeyW" aria-label="加速 Accelerate" aria-pressed="false">
+            <span class="touch-icon" aria-hidden="true">▲</span>
+            <span class="touch-label">加速</span>
+          </button>
         </div>
       </div>
 

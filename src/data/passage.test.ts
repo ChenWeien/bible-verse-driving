@@ -12,6 +12,7 @@ import {
   parseVerseText,
   PassageError,
   stripMarkup,
+  assertZhuyin,
   type RawPassage,
 } from './passage';
 import { excerptAroundBlank, tokensLength, verseTokens } from './verseDisplay';
@@ -290,6 +291,35 @@ describe('parsePassage', () => {
     const p = parsePassage(psalm16 as RawPassage);
     const opts = challengeOptions(p.challenges[0], seeded(7));
     expect([...opts].sort()).toEqual(['保佑', '審判', '離棄'].sort());
+  });
+});
+
+describe('zhuyin', () => {
+  const text = '耶和華是我的[牧者|仇敵|審判]，我必不致[缺乏|富足|驕傲]。';
+  const zhuyin = 'ㄧㄝˊ ㄏㄜˊ ㄏㄨㄚˊ ㄕˋ ㄨㄛˇ ㄉㄜ˙ ㄇㄨˋ ㄓㄜˇ ㄨㄛˇ ㄅㄧˋ ㄅㄨˋ ㄓˋ ㄑㄩㄝ ㄈㄚˊ';
+
+  it('accepts one syllable per character, ignoring punctuation and blank markup', () => {
+    expect(() => assertZhuyin(stripMarkup(text), zhuyin, 'verse 23:1')).not.toThrow();
+  });
+
+  it('rejects a syllable count that does not match the characters', () => {
+    expect(() => assertZhuyin(stripMarkup(text), 'ㄧㄝˊ ㄏㄜˊ', 'verse 23:1')).toThrow(/2 syllables for 14 characters/);
+  });
+
+  it('rejects a token that is not 注音', () => {
+    expect(() => assertZhuyin('主', 'zhu3', 'verse x')).toThrow(/not 注音/);
+  });
+
+  it('counts Chinese characters inside parenthetical notes', () => {
+    const note = '比天使（或譯：神）微小';
+    expect(() => assertZhuyin(note, 'ㄅㄧˇ ㄊㄧㄢ ㄕˇ ㄏㄨㄛˋ ㄧˋ ㄕㄣˊ ㄨㄟˊ ㄒㄧㄠˇ', 'verse 8:5')).not.toThrow();
+    expect(() => assertZhuyin(note, 'ㄅㄧˇ ㄊㄧㄢ ㄕˇ', 'verse 8:5')).toThrow(/3 syllables for 8 characters/);
+  });
+
+  it('leaves verses without zhuyin unchecked', () => {
+    for (const raw of [psalm1, psalm8, psalm16, psalm20, psalm23, psalm100] as RawPassage[]) {
+      expect(() => parsePassage(raw)).not.toThrow();
+    }
   });
 });
 

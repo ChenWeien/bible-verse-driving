@@ -40,6 +40,7 @@ export class Hud {
   onRetry: () => void = () => {};
   onMenu: () => void = () => {};
   onResume: () => void = () => {};
+  onScreen: (screen: 'start' | 'playing' | 'paused' | 'finished') => void = () => {};
 
   constructor() {
     $('start-button').addEventListener('click', () => this.onStart(this.select.value));
@@ -81,6 +82,7 @@ export class Hud {
     this.pause.classList.toggle('hidden', screen !== 'paused');
     this.finish.classList.toggle('hidden', screen !== 'finished');
     if (screen !== 'start' && document.activeElement instanceof HTMLElement) document.activeElement.blur();
+    this.onScreen(screen);
   }
 
   get visibleScreen(): 'start' | 'paused' | 'finished' | 'playing' {
