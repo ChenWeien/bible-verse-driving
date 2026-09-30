@@ -822,9 +822,16 @@ body.touch-ui button.primary {
     padding-left: 52px;
   }
 
+  /* Sit in the gap between the corner buttons, on the same bottom edge. */
   body.touch-ui .hud-verse {
-    bottom: auto;
-    width: min(48vw, 380px);
+    position: absolute;
+    left: calc(118px + env(safe-area-inset-left));
+    right: calc(128px + env(safe-area-inset-right));
+    bottom: calc(4px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
+    top: auto;
+    width: auto;
+    margin: 0;
+    transform: none;
   }
 
   body.touch-ui .hud-toast {
@@ -836,7 +843,7 @@ body.touch-ui button.primary {
   }
 
   body.touch-ui #hud {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
+    padding-bottom: calc(4px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
   }
 
   .touch-pad {
