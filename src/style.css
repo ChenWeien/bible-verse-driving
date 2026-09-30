@@ -601,9 +601,38 @@ body.touch-ui button.primary {
     padding: 6px 10px;
   }
 
+  /* Verse on the bottom edge; driving buttons sit in the row above it. */
   body.touch-ui .hud-verse {
-    bottom: auto;
+    position: absolute;
+    left: calc(8px + env(safe-area-inset-left));
+    right: calc(8px + env(safe-area-inset-right));
+    bottom: calc(8px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
+    top: auto;
     width: auto;
+    margin: 0;
+  }
+
+  body.touch-ui .touch-pad {
+    bottom: calc(8px + var(--verse-h, 76px) + 8px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
+  }
+
+  .touch-pad.right .touch-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+  }
+
+  .touch-pad.right .touch-gas {
+    width: 36px;
+    height: 36px;
+  }
+
+  .touch-pad.right .touch-label {
+    display: none;
+  }
+
+  .touch-pad.right .touch-icon {
+    font-size: 0.95rem;
   }
 
   body.touch-ui .hud-toast {
@@ -644,7 +673,7 @@ body.touch-ui button.primary {
   }
 
   body.touch-ui #hud {
-    padding-bottom: calc(84px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
+    padding-bottom: calc(8px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
   }
 
   body.touch-ui .hud-top {
@@ -685,6 +714,16 @@ body.touch-ui button.primary {
     height: 64px;
   }
 
+  .touch-pad.right .touch-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .touch-pad.right .touch-gas {
+    width: 32px;
+    height: 32px;
+  }
+
   .touch-icon {
     font-size: 1.15rem;
   }
@@ -694,7 +733,7 @@ body.touch-ui button.primary {
   }
 
   body.touch-ui #hud {
-    padding-bottom: calc(88px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
+    padding-bottom: calc(8px + env(safe-area-inset-bottom) + var(--vv-bottom, 0px));
   }
 
   .panel {

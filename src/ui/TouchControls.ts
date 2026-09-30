@@ -48,6 +48,19 @@ export class TouchControls {
     });
     window.addEventListener('blur', drop);
     this.root.addEventListener('contextmenu', (e) => e.preventDefault());
+    this.trackVerseHeight();
+  }
+
+  /** Portrait layout places the driving buttons just above the verse card. */
+  private trackVerseHeight(): void {
+    const verse = document.querySelector('.hud-verse');
+    if (!verse) return;
+    const apply = () => {
+      const h = Math.ceil(verse.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--verse-h', `${h}px`);
+    };
+    apply();
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(apply).observe(verse);
   }
 
   /** Show the pad only during a run, and only when touch controls are enabled. */
